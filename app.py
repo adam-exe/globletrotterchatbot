@@ -241,11 +241,6 @@ def display_message(image_url, sender, message, is_user=True):
 
 
 
-locations = ["New York", "London", "Paris"]  # Example locations
-
-if st.button("Generate Map"):
-    mapper.mapper(locations)
-
 
 def on_suggestion_click(query):
     st.session_state.user_input = query
