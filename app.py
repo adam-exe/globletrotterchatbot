@@ -253,6 +253,5 @@ api_key = "c819d2cf3ada4f94ad7fcb694f67deed"  # Replace with your OpenCage API k
 locations = ["New York", "London", "Paris"]  # Example locations
 
 if st.button("Generate Map"):
-    locations = [loc.strip() for loc in locations_input.split(',')]
     mapper.mapper(locations, api_key)
 
