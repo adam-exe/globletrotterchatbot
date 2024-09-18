@@ -210,7 +210,7 @@ st.image("images/banner2.png", use_column_width=True)
  
 # Sidebar with bot image and introduction text
 with st.sidebar:
-    st.image("images/bot.png", width=100)
+    st.image("images/Elixirr_logo.png", width=100)
     st.markdown("""**Hello! I'm Globot, your friendly travel assistant for Olympic Games information. Ask me about travel destinations, weather, and more.**
  
 **Example Requests:**
