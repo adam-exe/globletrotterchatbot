@@ -3,6 +3,7 @@ import requests
 import streamlit as st
 from langchain.tools import tool
 from streamlit_folium import folium_static
+from streamlit_folium import st_folium
 from io import StringIO
 
 def generate_map(coordinates_list, locations):
@@ -65,7 +66,7 @@ def create_map(coordinates_list, locations, my_map):
         ).add_to(my_map)
 
     try:
-        #st_folium(my_map, width=700, height=500)
+        st_folium(my_map, width=700, height=500)
     except:
         return st.error("Error drawing map.")
 
