@@ -4,7 +4,8 @@ import folium
 from streamlit_folium import folium_static
 
 # Function to get coordinates using OpenCage Geocoder
-def get_coordinates(location, api_key):
+def get_coordinates(location):
+    api_key = "c819d2cf3ada4f94ad7fcb694f67deed"  # Replace with your OpenCage API key
     """Fetches coordinates for a given location (city or country) using OpenCage Geocoder."""
     url = f"https://api.opencagedata.com/geocode/v1/json?q={location}&key={api_key}&limit=1"
    
@@ -33,7 +34,8 @@ def get_coordinates(location, api_key):
         raise ValueError(f"Error: {ve}")
 
 # Function to create and display the map in Streamlit
-def mapper(locations, api_key):
+def mapper(locations):
+    api_key = "c819d2cf3ada4f94ad7fcb694f67deed"  # Replace with your OpenCage API key
     # Create a base map centered around a default location
     map_center = [20, 0]  # Center of the world
     my_map = folium.Map(location=map_center, zoom_start=2)
@@ -43,7 +45,7 @@ def mapper(locations, api_key):
     # Get coordinates for the provided locations, handle errors individually
     for location in locations:
         try:
-            coord = get_coordinates(location, api_key)
+            coord = get_coordinates(location)
             coordinates.append(coord)
         except ValueError as e:
             st.error(e)
