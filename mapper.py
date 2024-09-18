@@ -3,6 +3,7 @@ from streamlit_folium import st_folium
 import requests
 import streamlit as st
 from langchain.tools import tool
+from streamlit_folium import folium_static
 
 def generate_map(coordinates_list, locations):
     map_center = [20, 0]
