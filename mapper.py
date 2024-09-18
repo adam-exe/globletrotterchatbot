@@ -8,7 +8,8 @@ def generate_map(coordinates_list, locations):
     map_center = [20, 0]
     my_map = folium.Map(location=map_center, zoom_start=2)
     create_map(coordinates_list, locations, my_map)
-    return my_map
+    st_folium(my_map, width=700, height=500)
+    
 
 def get_coordinates(location):
     api_key = "c819d2cf3ada4f94ad7fcb694f67deed"
@@ -52,6 +53,7 @@ def create_map(coordinates_list, locations, my_map):
     except:
         return st.error("Error drawing map.")
 
+
 @tool
 def get_locations(query: str) -> str:
     """Draw a map by extracting locations from a query and map them with numbered markers in Streamlit."""
@@ -70,8 +72,8 @@ def get_locations(query: str) -> str:
             return str(e)
 
     # Generate and display the map
-    my_map = generate_map(coordinates_list, locations)
-    folium_static(my_map)
+    generate_map(coordinates_list, locations)
+    
 
 
 
