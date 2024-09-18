@@ -238,11 +238,11 @@ def display_message(image_url, sender, message, is_user=True):
         st.write(f"**{sender}:** {content}", unsafe_allow_html=True)
 
 
-api_key = "c819d2cf3ada4f94ad7fcb694f67deed"  # Replace with your OpenCage API key
+
 locations = ["New York", "London", "Paris"]  # Example locations
 
 if st.button("Generate Map"):
-    mapper.mapper(locations, api_key)
+    mapper.mapper(locations)
 
 
 def on_suggestion_click(query):
