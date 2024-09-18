@@ -239,7 +239,7 @@ def display_message(image_url, sender, message, is_user=True):
 
 # Form for user input
 with st.form(key='user_input_form'):
-    user_input = st.text_input("Enter your query:")
+    user_input = st.text_input("Enter your query:", key="user_input", on_change=lambda: on_suggestion_click(st.session_state.user_input))
     submit_button = st.form_submit_button(label='Send')
 
 if submit_button:
@@ -276,7 +276,6 @@ for suggestion in suggestions:
     if st.sidebar.button(suggestion):
         on_suggestion_click(suggestion)
  
-# Text input for custom queries
-st.text_input("Enter your query:", key="user_input", on_change=lambda: on_suggestion_click(st.session_state.user_input))
+
  
 
