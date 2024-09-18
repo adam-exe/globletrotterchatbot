@@ -11,6 +11,9 @@ def generate_map(coordinates_list, locations):
     my_map = folium.Map(location=map_center, zoom_start=2)
     create_map(coordinates_list, locations, my_map)
     # Convert map to HTML
+    folium_static(my_map, width=700, height=500)
+    
+    # Convert map to HTML
     map_html = my_map._repr_html_()
     
     # Create an in-memory buffer for the HTML
@@ -21,7 +24,7 @@ def generate_map(coordinates_list, locations):
     # Add download button for the HTML file
     st.download_button(
         label="Download Map as HTML",
-        data=html_buffer,
+        data=html_buffer.getvalue(),  # Use getvalue() to get the string content
         file_name="map.html",
         mime="text/html"
     )
