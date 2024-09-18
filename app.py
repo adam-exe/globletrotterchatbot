@@ -50,8 +50,7 @@ tools = [
     predict_tourism_growth,
     country_with_biggest_tourist_increase,
     get_tourism_info,
-    save_last_bot_response,
-    extract_and_store_locations, 
+    save_last_bot_response, 
     map_places
 ]
 
