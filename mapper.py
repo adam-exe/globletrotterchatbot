@@ -4,7 +4,6 @@ import requests
 import streamlit as st
 from langchain.tools import tool
 
-@st.cache_data
 def generate_map(coordinates_list, locations):
     map_center = [20, 0]
     my_map = folium.Map(location=map_center, zoom_start=2)
@@ -70,10 +69,10 @@ def get_locations(query: str) -> str:
         except ValueError as e:
             return str(e)
 
-    # Generate and cache the map
+    # Generate and display the map
     my_map = generate_map(coordinates_list, locations)
-    
     st_folium(my_map, width=700, height=500)
+
 
 
 
