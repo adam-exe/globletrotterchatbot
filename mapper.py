@@ -1,5 +1,4 @@
 import folium
-from streamlit_folium import st_folium
 import requests
 import streamlit as st
 from langchain.tools import tool
