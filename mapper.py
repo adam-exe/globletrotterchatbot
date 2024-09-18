@@ -12,8 +12,10 @@ def generate_map(coordinates_list, locations):
     return my_map
  
 def get_coordinates(location):
+
+    api_key = "c819d2cf3ada4f94ad7fcb694f67deed" 
     # Fetches coordinates for a given location (city or country) using Nominatim.
-    url = f"https://nominatim.openstreetmap.org/search?q={location}&format=json&limit=1"
+    url = f"https://api.opencagedata.com/geocode/v1/json?q={location}&key={api_key}&limit=1"
    
     try:
         # Send the request
