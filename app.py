@@ -249,11 +249,3 @@ if submit_button:
     if user_input:
             display_message(user_image, "You", user_input, is_user=True)
 
-
-
-api_key = "c819d2cf3ada4f94ad7fcb694f67deed"  # Replace with your OpenCage API key
-locations = ["New York", "London", "Paris"] 
-
-# If the API key and locations are provided, generate the map
-if st.button("Generate Map"):
-    mapper.mapper(locations, api_key)
