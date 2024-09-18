@@ -8,7 +8,7 @@ def generate_map(coordinates_list, locations):
     map_center = [20, 0]
     my_map = folium.Map(location=map_center, zoom_start=2)
     create_map(coordinates_list, locations, my_map)
-    st_folium(my_map, width=700, height=500)
+    folium_static(my_map)
     
 
 def get_coordinates(location):
