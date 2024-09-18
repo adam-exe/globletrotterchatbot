@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import logging
 import uuid
 import os
+import mapper
 load_dotenv()
 
 st.set_page_config(page_title="Globot", page_icon="images/Elixirr_logo.png", layout="wide")
@@ -247,3 +248,12 @@ if submit_button:
         display_message(bot_image, "Globot", response, is_user=False)
     if user_input:
             display_message(user_image, "You", user_input, is_user=True)
+
+
+
+api_key = "c819d2cf3ada4f94ad7fcb694f67deed"  # Replace with your OpenCage API key
+locations = ["New York", "London", "Paris"] 
+
+# If the API key and locations are provided, generate the map
+if st.button("Generate Map"):
+    mapper.mapper(locations, api_key)
