@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 import logging
 import uuid
 import os
-import mapper
+import mapper  # Import mapper.py
+
 load_dotenv()
 
 st.set_page_config(page_title="Globot", page_icon="images/Elixirr_logo.png", layout="wide")
@@ -28,8 +29,7 @@ try:
     from wikipediatools2 import get_best_travel_package, get_tourism_info
     from prediction_model import predict_tourism_growth, country_with_biggest_tourist_increase
     from map_draw import save_last_bot_response
-    from mapper import extract_and_store_locations
-    from mapper import map_places
+    from mapper import extract_and_store_locations, map_places  # Updated imports
 except ImportError as e:
     logger.error(f"Error importing modules: {e}")
     st.error(f"Error importing modules: {e}")
@@ -55,8 +55,6 @@ tools = [
     map_places
 ]
 
-
-
 # Ensure AWS_DEFAULT_REGION is set
 if 'AWS_DEFAULT_REGION' not in os.environ:
     os.environ['AWS_DEFAULT_REGION'] = 'eu-central-1'
@@ -68,7 +66,6 @@ if 'session_id' not in st.session_state:
 # Use StreamlitChatMessageHistory for persistent chat history
 if 'message_history' not in st.session_state:
     st.session_state.message_history = StreamlitChatMessageHistory(key="chat_messages")
-
 
 # Bind tools to model
 chat_model_id = "anthropic.claude-3-haiku-20240307-v1:0"
@@ -115,12 +112,13 @@ MAX_HISTORY_LENGTH = 5000  # Maximum number of characters to keep in history
 MAX_INPUT_LENGTH = 1000   # Maximum length for user input
 
 def truncate_history(messages, max_length):
-    """Truncate the message history to a maximum length, keeping the most recent messages."""
+    """Truncate the message history to a maximum length, keeping the most recent messages.""" 
     current_length = sum(len(get_message_content(msg)) for msg in messages)
     while current_length > max_length and messages:
         removed_message = messages.pop(0)
         current_length -= len(get_message_content(removed_message))
     return messages
+
 
 def get_message_content(message):
     """Safely extract content from various message formats."""
