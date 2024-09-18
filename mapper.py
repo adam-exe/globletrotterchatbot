@@ -65,7 +65,7 @@ def create_map(coordinates_list, locations, my_map):
         ).add_to(my_map)
 
     try:
-        st_folium(my_map, width=700, height=500)
+        #st_folium(my_map, width=700, height=500)
     except:
         return st.error("Error drawing map.")
 
