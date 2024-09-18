@@ -27,7 +27,7 @@ def get_coordinates(location):
        
         # Extract coordinates
         return [float(data['results'][0]['geometry']['lat']), float(data['results'][0]['geometry']['lng'])]
- 
+
     except requests.exceptions.RequestException as e:
         raise ValueError(f"Request failed: {e}")
  
@@ -67,7 +67,6 @@ def mapper(locations):
     # Display the map in Streamlit
     folium_static(my_map)
 
-
 @tool
 def extract_and_store_locations(text: str) -> list:
     """Extracts place names from the provided text and stores them in memory."""
@@ -90,5 +89,6 @@ def map_places() -> str:
         return f"Map has been updated with the places: {', '.join(places)}"
     else:
         return "No places to map. Please mention some places first."
+
 
 
