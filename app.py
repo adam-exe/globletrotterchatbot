@@ -66,6 +66,10 @@ if 'session_id' not in st.session_state:
 if 'message_history' not in st.session_state:
     st.session_state.message_history = StreamlitChatMessageHistory(key="chat_messages")
 
+# Initialize map visibility state
+if 'map_visible' not in st.session_state:
+    st.session_state.map_visible = False
+
 # Bind tools to model
 chat_model_id = "anthropic.claude-3-haiku-20240307-v1:0"
 chat_model = None
