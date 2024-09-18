@@ -279,11 +279,4 @@ for suggestion in suggestions:
 # Text input for custom queries
 st.text_input("Enter your query:", key="user_input", on_change=lambda: on_suggestion_click(st.session_state.user_input))
  
-# Display the chat interface
-if st.button("Send"):
-    user_input = st.session_state.user_input
-    if user_input:
-        response = handle_user_input(user_input)
-        if response:
-            display_message(bot_image, "Bot", response, is_user=False)
 
