@@ -11,7 +11,7 @@ import uuid
 import os
 load_dotenv()
 
-st.set_page_config(page_title="Globot", page_icon="images/bot.png", layout="wide")
+st.set_page_config(page_title="Globot", page_icon="images/Elixirr_logo.png", layout="wide")
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
