@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import folium
 from streamlit_folium import folium_static
+from langchain.tools import tool
 
 # Function to get coordinates using OpenCage Geocoder
 def get_coordinates(location):
@@ -65,4 +66,29 @@ def mapper(locations):
     
     # Display the map in Streamlit
     folium_static(my_map)
+
+
+@tool
+def extract_and_store_locations(text: str) -> list:
+    """Extracts place names from the provided text and stores them in memory."""
+    places = extract_locations_from_text(text)
+    if places:
+        memory.save_context({"input": text}, {"output": ", ".join(places)})
+    return places
+
+@tool
+def map_places() -> str:
+    """Maps previously mentioned places using the mapper function."""
+    conversation = memory.load_memory_variables({})
+    places = conversation.get("history", "").split(", ")
+    
+    # Filter out empty places and ensure unique entries
+    places = list(set(filter(None, places)))
+    
+    if places:
+        mapper(places)
+        return f"Map has been updated with the places: {', '.join(places)}"
+    else:
+        return "No places to map. Please mention some places first."
+
 
