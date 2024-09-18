@@ -237,17 +237,6 @@ def display_message(image_url, sender, message, is_user=True):
             content = content[0].get('text', '')
         st.write(f"**{sender}:** {content}", unsafe_allow_html=True)
 
-# Form for user input
-with st.form(key='user_input_form'):
-    user_input = st.text_input("Enter your query:", key="user_input", on_change=lambda: on_suggestion_click(st.session_state.user_input))
-    submit_button = st.form_submit_button(label='Send')
-
-if submit_button:
-    response = handle_user_input(user_input)
-    if response:  # Only display the bot's response if it's not empty
-        display_message(bot_image, "Globot", response, is_user=False)
-    if user_input:
-            display_message(user_image, "You", user_input, is_user=True)
 
 api_key = "c819d2cf3ada4f94ad7fcb694f67deed"  # Replace with your OpenCage API key
 locations = ["New York", "London", "Paris"]  # Example locations
@@ -275,6 +264,18 @@ suggestions = [
 for suggestion in suggestions:
     if st.sidebar.button(suggestion):
         on_suggestion_click(suggestion)
+
+# Text input for custom queries
+st.text_input("Enter your query:", key="user_input", on_change=lambda: on_suggestion_click(st.session_state.user_input))
+ 
+# Display the chat interface
+if st.button("Send"):
+    user_input = st.session_state.user_input
+    if user_input:
+        response = handle_user_input(user_input)
+        if response:
+            display_message(bot_image, "Bot", response, is_user=False)
+ 
  
 
  
