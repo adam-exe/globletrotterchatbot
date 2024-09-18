@@ -9,11 +9,9 @@ from dotenv import load_dotenv
 import logging
 import uuid
 import os
-import mapper  # Import mapper.py
-
 load_dotenv()
 
-st.set_page_config(page_title="Globot", page_icon="images/Elixirr_logo.png", layout="wide")
+st.set_page_config(page_title="Globot", page_icon="images/bot.png", layout="wide")
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -29,7 +27,6 @@ try:
     from wikipediatools2 import get_best_travel_package, get_tourism_info
     from prediction_model import predict_tourism_growth, country_with_biggest_tourist_increase
     from map_draw import save_last_bot_response
-    from mapper import  get_locations  # Updated imports
 except ImportError as e:
     logger.error(f"Error importing modules: {e}")
     st.error(f"Error importing modules: {e}")
@@ -50,9 +47,10 @@ tools = [
     predict_tourism_growth,
     country_with_biggest_tourist_increase,
     get_tourism_info,
-    save_last_bot_response, 
-    get_locations
+    save_last_bot_response
 ]
+
+
 
 # Ensure AWS_DEFAULT_REGION is set
 if 'AWS_DEFAULT_REGION' not in os.environ:
@@ -65,6 +63,7 @@ if 'session_id' not in st.session_state:
 # Use StreamlitChatMessageHistory for persistent chat history
 if 'message_history' not in st.session_state:
     st.session_state.message_history = StreamlitChatMessageHistory(key="chat_messages")
+
 
 # Bind tools to model
 chat_model_id = "anthropic.claude-3-haiku-20240307-v1:0"
@@ -111,13 +110,12 @@ MAX_HISTORY_LENGTH = 5000  # Maximum number of characters to keep in history
 MAX_INPUT_LENGTH = 1000   # Maximum length for user input
 
 def truncate_history(messages, max_length):
-    """Truncate the message history to a maximum length, keeping the most recent messages.""" 
+    """Truncate the message history to a maximum length, keeping the most recent messages."""
     current_length = sum(len(get_message_content(msg)) for msg in messages)
     while current_length > max_length and messages:
         removed_message = messages.pop(0)
         current_length -= len(get_message_content(removed_message))
     return messages
-
 
 def get_message_content(message):
     """Safely extract content from various message formats."""
@@ -184,13 +182,14 @@ def handle_user_input(user_input):
         logger.debug(f"Response from agent: {response}")
         
         # Extract and format the bot's response
-        bot_response = ''
         if isinstance(response, dict) and 'output' in response:
             bot_response = response['output']
         elif isinstance(response, str):
             bot_response = response
         elif isinstance(response, list) and len(response) > 0 and isinstance(response[0], dict):
-            bot_response = response[0].get('text', '')
+            bot_response = ' '.join(item.get('text', '') for item in response)
+        else:
+            bot_response = str(response)
         
         # Add bot response to history
         st.session_state.message_history.add_message(AIMessage(content=bot_response))
@@ -202,15 +201,12 @@ def handle_user_input(user_input):
     
     return bot_response
 
-
-# Display banner image
-
 # Display banner image
 st.image("images/banner2.png", use_column_width=True)
  
 # Sidebar with bot image and introduction text
 with st.sidebar:
-    st.image("images/Elixirr_logo.png", width=100)
+    st.image("images/bot.png", width=100)
     st.markdown("""**Hello! I'm Globot, your friendly travel assistant for Olympic Games information. Ask me about travel destinations, weather, and more.**
  
 **Example Requests:**
@@ -225,7 +221,7 @@ with st.sidebar:
     """)
 # Images for user and bot
 user_image = "images/user.png"
-bot_image = "images/Elixirr_logo.png"
+bot_image = "images/bot.png"
 
 # Function to display messages
 def display_message(image_url, sender, message, is_user=True):
@@ -238,39 +234,18 @@ def display_message(image_url, sender, message, is_user=True):
             content = content[0].get('text', '')
         st.write(f"**{sender}:** {content}", unsafe_allow_html=True)
 
+# Form for user input
+with st.form(key='user_input_form'):
+    user_input = st.text_input("Enter your query:")
+    submit_button = st.form_submit_button(label='Send')
 
-
-
-def on_suggestion_click(query):
-    st.session_state.user_input = query
-    response = handle_user_input(query)
-    if response:
-        display_message(bot_image, "Bot", response, is_user=False)
- 
-# User input with suggestion buttons
-st.sidebar.header("Suggestion Buttons")
-suggestions = [
-    "Which countries are the most successful in their olympic performance?",
-    "What are the trends in medal counts for athletics across Italy?",
-    "Tell me about the Olympic records in swimming.",
-    "Give me a travel itinerary for 15 days across Asian countries focusing on countries that did well in the Olympics",
-]
- 
-# Display suggestion buttons
-for suggestion in suggestions:
-    if st.sidebar.button(suggestion):
-        on_suggestion_click(suggestion)
-
-# Text input for custom queries
-st.text_input("Enter your query:", key="user_input", on_change=lambda: on_suggestion_click(st.session_state.user_input))
- 
-# Display the chat interface
-if st.button("Send"):
-    user_input = st.session_state.user_input
+if submit_button:
+    response = handle_user_input(user_input)
+    if response:  # Only display the bot's response if it's not empty
+        display_message(bot_image, "Globot", response, is_user=False)
     if user_input:
-        response = handle_user_input(user_input)
-        if response:
-            display_message(bot_image, "Bot", response, is_user=False)
+            display_message(user_image, "You", user_input, is_user=True)
+
  
  
 
