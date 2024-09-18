@@ -71,7 +71,7 @@ def get_locations(query: str) -> str:
 
     # Generate and display the map
     my_map = generate_map(coordinates_list, locations)
-    st_folium(my_map, width=700, height=500)
+    folium_static(my_map)
 
 
 
