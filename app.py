@@ -223,7 +223,7 @@ with st.sidebar:
     """)
 # Images for user and bot
 user_image = "images/user.png"
-bot_image = "images/Elixirr_logo.png
+bot_image = "images/Elixirr_logo.png"
 
 # Function to display messages
 def display_message(image_url, sender, message, is_user=True):
