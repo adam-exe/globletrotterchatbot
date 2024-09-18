@@ -29,7 +29,7 @@ try:
     from wikipediatools2 import get_best_travel_package, get_tourism_info
     from prediction_model import predict_tourism_growth, country_with_biggest_tourist_increase
     from map_draw import save_last_bot_response
-    from mapper import get_locations  # Updated imports
+    from mapper import  get_locations  # Updated imports
 except ImportError as e:
     logger.error(f"Error importing modules: {e}")
     st.error(f"Error importing modules: {e}")
@@ -65,10 +65,6 @@ if 'session_id' not in st.session_state:
 # Use StreamlitChatMessageHistory for persistent chat history
 if 'message_history' not in st.session_state:
     st.session_state.message_history = StreamlitChatMessageHistory(key="chat_messages")
-
-# Initialize map visibility state
-if 'map_visible' not in st.session_state:
-    st.session_state.map_visible = False
 
 # Bind tools to model
 chat_model_id = "anthropic.claude-3-haiku-20240307-v1:0"
@@ -205,6 +201,9 @@ def handle_user_input(user_input):
         return f"An error occurred: {str(e)}"
     
     return bot_response
+
+
+# Display banner image
 
 # Display banner image
 st.image("images/banner2.png", use_column_width=True)
