@@ -4,12 +4,28 @@ import requests
 import streamlit as st
 from langchain.tools import tool
 from streamlit_folium import folium_static
+from io import StringIO
 
 def generate_map(coordinates_list, locations):
     map_center = [20, 0]
     my_map = folium.Map(location=map_center, zoom_start=2)
     create_map(coordinates_list, locations, my_map)
     folium_static(my_map)
+    # Convert map to HTML
+    map_html = my_map._repr_html_()
+    
+    # Create an in-memory buffer for the HTML
+    html_buffer = StringIO()
+    html_buffer.write(map_html)
+    html_buffer.seek(0)
+    
+    # Add download button for the HTML file
+    st.download_button(
+        label="Download Map as HTML",
+        data=html_buffer,
+        file_name="map.html",
+        mime="text/html"
+    )
     
 
 def get_coordinates(location):
