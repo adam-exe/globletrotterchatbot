@@ -10,8 +10,6 @@ def generate_map(coordinates_list, locations):
     map_center = [20, 0]
     my_map = folium.Map(location=map_center, zoom_start=2)
     create_map(coordinates_list, locations, my_map)
-    # Convert map to HTML
-    folium_static(my_map, width=700, height=500)
     
     # Convert map to HTML
     map_html = my_map._repr_html_()
