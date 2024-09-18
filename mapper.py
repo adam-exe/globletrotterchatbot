@@ -67,13 +67,16 @@ def mapper(locations):
     # Display the map in Streamlit
     folium_static(my_map)
 
-@tool
-def extract_and_store_locations(text: str) -> list:
-    """Extracts place names from the provided text and stores them in memory."""
-    places = extract_locations_from_text(text)
-    if places:
-        memory.save_context({"input": text}, {"output": ", ".join(places)})
-    return places
+import re
+
+# Function to extract place names from text (using regex as a placeholder)
+def extract_locations_from_text(text: str) -> list:
+    """Extracts place names from the provided text using a basic regex approach."""
+    # This is a placeholder implementation. You may need a more robust method.
+    place_pattern = re.compile(r'\b[A-Z][a-z]*\b')  # Example regex pattern for capitalized words
+    places = place_pattern.findall(text)
+    # Filter out common non-place words or implement more sophisticated filtering
+    return [place for place in places if place.lower() not in ["the", "a", "of", "in"]]
 
 @tool
 def map_places() -> str:
