@@ -55,6 +55,7 @@ def generate_map(coordinates_list, locations):
     """Generates an interactive map and provides a download link."""
     api_key = "c819d2cf3ada4f94ad7fcb694f67deed"
     my_map = mapper(locations, api_key)
+    folium_static(my_map)
 
     # Convert map to HTML
     map_html = my_map._repr_html_()
