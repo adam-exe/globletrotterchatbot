@@ -213,10 +213,27 @@ def handle_user_input(user_input):
     
     return bot_response
 
+# Function to display messages
+def display_message(image_url, sender, message, is_user=True):
+    col1, col2 = st.columns([1, 5])
+    with col1:
+        st.image(image_url, width=50)
+    with col2:
+        st.markdown(f"**{sender}:** {message}")
+
+# Function to handle suggestion button clicks
+def on_suggestion_click(query):
+    st.session_state.user_input = query
+    response = handle_user_input(query)
+    if response:
+        display_message(bot_image, "Globot", response, is_user=False)
+
 # Sidebar with bot image and introduction text
 with st.sidebar:
     st.image("images/bot.png", width=100)
-    st.markdown("""**Hello! I'm Globot, your friendly travel assistant for Olympic Games information. Ask me about travel destinations, weather, and more.**""")
+    st.markdown("""
+    **Hello! I'm Globot, your friendly travel assistant for Olympic Games information. Ask me about travel destinations, weather, and more.**
+    """)
     
     # Suggestion buttons
     suggestions = [
@@ -226,24 +243,10 @@ with st.sidebar:
         "Give me a travel itinerary for 15 days across Asian countries focusing on countries that did well in the Olympics",
     ]
     
-    def on_suggestion_click(query):
-        st.session_state.user_input = query
-        response = handle_user_input(query)
-        if response:
-            display_message(bot_image, "Globot", response, is_user=False)
-    
     # Display suggestion buttons
     for suggestion in suggestions:
         if st.button(suggestion):
             on_suggestion_click(suggestion)
-
-# Function to display messages
-def display_message(image_url, sender, message, is_user=True):
-    col1, col2 = st.columns([1, 5])
-    with col1:
-        st.image(image_url, width=50)
-    with col2:
-        st.markdown(f"**{sender}:** {message}")
 
 # Handle user input with form
 with st.form(key='chat_form'):
@@ -257,6 +260,7 @@ with st.form(key='chat_form'):
 
 # Close the main content div
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 
  
