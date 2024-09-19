@@ -66,12 +66,12 @@ def generate_map(coordinates_list, locations):
     html_buffer.seek(0)
     
     # Add download button for the HTML file
-    st.download_button(
-        label="Download Map as HTML",
-        data=html_buffer.getvalue(),
-        file_name="map.html",
-        mime="text/html"
-    )
+    #st.download_button(
+       # label="Download Map as HTML",
+       # data=html_buffer.getvalue(),
+       # file_name="map.html",
+       #  mime="text/html"
+    #)
 
 @tool
 def get_locations(query: str) -> str:
