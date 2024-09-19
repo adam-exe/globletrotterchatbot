@@ -247,6 +247,9 @@ with st.sidebar:
     for suggestion in suggestions:
         if st.button(suggestion):
             on_suggestion_click(suggestion)
+            
+user_image = "images/user.png"
+bot_image = "images/Elixirr_logo.png"
 
 # Handle user input with form
 with st.form(key='chat_form'):
