@@ -194,12 +194,16 @@ def handle_user_input(user_input):
         logger.debug(f"Response from agent: {response}")
         
         # Extract and format the bot's response
-        if isinstance(response, dict) and 'text' in response:
-            bot_response = response['text']
-        elif isinstance(response, str):
-            bot_response = response
-        elif isinstance(response, list) and len(response) > 0 and isinstance(response[0], dict) and 'text' in response[0]:
-            bot_response = response[0]['text']
+        if isinstance(response, dict) and 'output' in response:
+            output_list = response['output']
+            if isinstance(output_list, list) and len(output_list) > 0:
+                first_item = output_list[0]
+                if isinstance(first_item, dict) and 'text' in first_item:
+                    bot_response = first_item['text']
+                else:
+                    bot_response = str(output_list)
+            else:
+                bot_response = str(output_list)
         else:
             bot_response = str(response)
         
@@ -212,6 +216,7 @@ def handle_user_input(user_input):
         return f"An error occurred: {str(e)}"
     
     return bot_response
+
 
 # Function to display messages
 def display_message(image_url, sender, message, is_user=True):
