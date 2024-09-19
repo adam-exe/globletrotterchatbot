@@ -14,31 +14,29 @@ load_dotenv()
 st.set_page_config(page_title="Globot", page_icon="images/bot.png", layout="wide")
 
 
-# Add custom CSS to make the banner static at the top of the page
+
+# Add custom CSS for the fixed banner and padding for the content
 st.markdown("""
     <style>
     .fixed-banner {
         position: fixed;
         top: 0;
-        left: 0;
         width: 100%;
         z-index: 1000;
-        background-color: white;
+        background-color: white; /* Background color to ensure readability */
         text-align: center;
         padding: 10px 0;
     }
     .main-content {
-        padding-top: 120px; /* Adjust this value based on the height of the banner */
+        padding-top: 150px; /* Adjust this based on the banner height */
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Render the banner image inside a fixed-position div
-st.markdown("""
-    <div class="fixed-banner">
-        <img src='images/banner2.png' style="max-width: 100%; height: auto;">
-    </div>
-    """, unsafe_allow_html=True)
+# Use st.image to load the banner
+st.markdown('<div class="fixed-banner">', unsafe_allow_html=True)
+st.image("images/banner2.png", use_column_width=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Add padding for the rest of the content so it doesn't overlap with the banner
 st.markdown('<div class="main-content">', unsafe_allow_html=True)
