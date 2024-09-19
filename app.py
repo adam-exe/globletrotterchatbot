@@ -218,32 +218,11 @@ with st.sidebar:
     st.image("images/bot.png", width=100)
     st.markdown("""**Hello! I'm Globot, your friendly travel assistant for Olympic Games information. Ask me about travel destinations, weather, and more.**""")
 
-# Images for user and bot
-user_image = "images/user.png"
-bot_image = "images/bot.png"
+    # Suggestion buttons
+    st.header("Suggestion Buttons")
+    suggestions = [
+        "Which countries are the most successful in their
 
-# Function to display messages
-def display_message(image_url, sender, message, is_user=True):
-    col1, col2 = st.columns([1, 5])
-    with col1:
-        st.image(image_url, width=50)
-    with col2:
-        st.markdown(f"**{sender}:** {message}")
-
-# User input and response handling
-with st.form(key='chat_form'):
-    user_input = st.text_input("You: ", "")
-    submit_button = st.form_submit_button(label='Send')
-    
-    if submit_button and user_input:
-        bot_response = handle_user_input(user_input)
-        display_message(user_image, "You", user_input, is_user=True)
-        display_message(bot_image, "Globot", bot_response, is_user=False)
-
-# Close the main content div
-st.markdown('</div>', unsafe_allow_html=True)
-
- 
  
 
  
