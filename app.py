@@ -11,6 +11,30 @@ import uuid
 import os
 load_dotenv()
 
+# Add custom CSS to make the banner static at the top of the page
+st.markdown("""
+    <style>
+    .fixed-banner {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: white;
+        text-align: center;
+        padding: 10px 0;
+    }
+    .main-content {
+        padding-top: 120px; /* Adjust this based on the height of the banner */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Display the banner image
+st.image("images/banner2.png", use_column_width=True)
+
+# Add a wrapper div for the content and apply padding so it doesn't overlap with the fixed banner
+st.markdown('<div class="main-content">', unsafe_allow_html=True)
+
 st.set_page_config(page_title="Globot", page_icon="images/bot.png", layout="wide")
 
 # Set up logging
@@ -203,39 +227,6 @@ def handle_user_input(user_input):
     
     return bot_response
 
-# Add custom CSS to make the banner static at the top of the page
-st.markdown("""
-    <style>
-    .fixed-banner {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        background-color: white;
-        padding: 10px 0;
-        text-align: center;
-    }
-    .main-content {
-        padding-top: 150px; /* Adjust this value based on the banner height */
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# Display the banner as a static element using st.image with fixed positioning
-st.markdown(f"""
-    <div class="fixed-banner">
-        <img src='images/banner2.png' style="max-width: 100%; height: auto;">
-    </div>
-    """, unsafe_allow_html=True)
-
-# Add the rest of your Streamlit content after the banner
-st.markdown('<div class="main-content">', unsafe_allow_html=True)
-
-# Your Streamlit app content goes here
-st.write("This is the rest of your app content, below the banner.")
-
-# Close the main content div
-st.markdown('</div>', unsafe_allow_html=True)
 
  
 # Sidebar with bot image and introduction text
@@ -290,8 +281,9 @@ if st.button("Send"):
         response = handle_user_input(user_input)
         if response:
             display_message(bot_image, "Bot", response, is_user=False)
- 
-
+            
+ # Close the main content div
+st.markdown('</div>', unsafe_allow_html=True)
  
  
 
