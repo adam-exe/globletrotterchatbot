@@ -194,12 +194,12 @@ def handle_user_input(user_input):
         logger.debug(f"Response from agent: {response}")
         
         # Extract and format the bot's response
-        if isinstance(response, dict) and 'output' in response:
-            bot_response = response['output']
+        if isinstance(response, dict) and 'text' in response:
+            bot_response = response['text']
         elif isinstance(response, str):
             bot_response = response
-        elif isinstance(response, list) and len(response) > 0 and isinstance(response[0], dict):
-            bot_response = ' '.join(item.get('text', '') for item in response)
+        elif isinstance(response, list) and len(response) > 0 and isinstance(response[0], dict) and 'text' in response[0]:
+            bot_response = response[0]['text']
         else:
             bot_response = str(response)
         
