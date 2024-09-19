@@ -221,8 +221,46 @@ with st.sidebar:
     # Suggestion buttons
     st.header("Suggestion Buttons")
     suggestions = [
-        "Which countries are the most successful in their"
+        "Which countries are the most successful in their Olympic performance?",
+        "What are the trends in medal counts for athletics across Italy?",
+        "Tell me about the Olympic records in swimming.",
+        "Give me a travel itinerary for 15 days across Asian countries focusing on countries that did well in the Olympics",
+    ]
+    
+    def on_suggestion_click(query):
+        st.session_state.user_input = query
+        response = handle_user_input(query)
+        if response:
+            display_message(bot_image, "Bot", response, is_user=False)
+    
+    # Display suggestion buttons
+    for suggestion in suggestions:
+        if st.button(suggestion):
+            on_suggestion_click(suggestion)
 
+# Display the chat interface
+user_image = "images/user.png"
+bot_image = "images/bot.png"
+
+def display_message(image_url, sender, message, is_user=True):
+    col1, col2 = st.columns([1, 5])
+    with col1:
+        st.image(image_url, width=50)
+    with col2:
+        st.markdown(f"**{sender}:** {message}")
+
+# Handle user input with form
+with st.form(key='chat_form'):
+    user_input = st.text_input("You: ", "")
+    submit_button = st.form_submit_button(label='Send')
+    
+    if submit_button and user_input:
+        bot_response = handle_user_input(user_input)
+        display_message(user_image, "You", user_input, is_user=True)
+        display_message(bot_image, "Globot", bot_response, is_user=False)
+
+# Close the main content div
+st.markdown('</div>', unsafe_allow_html=True)
  
 
  
