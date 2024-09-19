@@ -269,8 +269,7 @@ if st.button("Send"):
         if response:
             display_message(bot_image, "Bot", response, is_user=False)
  
-Hi guys Sara said you guys couldn't get the buttons to work, if you paste this underneath the # Function to display messages
-def display_message, section it should work. Can you please try
+
  
  
 
