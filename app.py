@@ -11,9 +11,8 @@ import uuid
 import os
 load_dotenv()
 
+# Set page configuration
 st.set_page_config(page_title="Globot", page_icon="images/bot.png", layout="wide")
-
-
 
 # Add custom CSS for the fixed banner and padding for the content
 st.markdown("""
@@ -23,17 +22,17 @@ st.markdown("""
         top: 0;
         width: 100%;
         z-index: 1000;
-        background-color: white; /* Background color to ensure readability */
+        background-color: white;
         text-align: center;
         padding: 10px 0;
     }
     .main-content {
-        padding-top: 150px; /* Adjust this based on the banner height */
+        padding-top: 180px; /* Adjust padding based on banner height */
     }
     </style>
     """, unsafe_allow_html=True)
 
-# Use st.image to load the banner
+# Display the fixed banner
 st.markdown('<div class="fixed-banner">', unsafe_allow_html=True)
 st.image("images/banner2.png", use_column_width=True)
 st.markdown('</div>', unsafe_allow_html=True)
@@ -45,9 +44,7 @@ st.markdown('<div class="main-content">', unsafe_allow_html=True)
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# Import the Athena function and tool from x.py
-from x import query_athena_tool
-
+# Import tools and functions
 try:
     from weathertools import get_current_weather, get_weather_forecast, get_historical_weather
     from weathertools2 import recommend_best_time_to_visit
@@ -56,13 +53,12 @@ try:
     from prediction_model import predict_tourism_growth, country_with_biggest_tourist_increase
     from map_draw import save_last_bot_response
     from mapper import get_locations
+    from x import query_athena_tool
 except ImportError as e:
     logger.error(f"Error importing modules: {e}")
     st.error(f"Error importing modules: {e}")
 
-# Load environment variables
-
-# Define tools
+# Define tools and load environment variables
 tools = [
     get_current_weather,
     get_weather_forecast,
@@ -80,22 +76,18 @@ tools = [
     get_locations
 ]
 
-
-
 # Ensure AWS_DEFAULT_REGION is set
 if 'AWS_DEFAULT_REGION' not in os.environ:
     os.environ['AWS_DEFAULT_REGION'] = 'eu-central-1'
 
-# Initialize session state for memory and session ID
+# Initialize session state
 if 'session_id' not in st.session_state:
     st.session_state.session_id = str(uuid.uuid4())
 
-# Use StreamlitChatMessageHistory for persistent chat history
 if 'message_history' not in st.session_state:
     st.session_state.message_history = StreamlitChatMessageHistory(key="chat_messages")
 
-
-# Bind tools to model
+# Bind tools to the model
 chat_model_id = "anthropic.claude-3-haiku-20240307-v1:0"
 chat_model = None
 try:
@@ -104,26 +96,15 @@ except Exception as e:
     logger.error(f"Error initializing ChatBedrock: {e}")
     st.error(f"Error initializing ChatBedrock: {e}")
 
-# Create agent with updated prompt template
-prompt = ChatPromptTemplate.from_messages([
-    ("system", """You are a helpful assistant specializing in Olympic travel information. Use the tools at your disposal to answer questions. Maintain context from previous messages in the conversation. Remember details about the user that they've shared. If you're unsure about something, you can ask for clarification.
-    For any user queries not related to travel, first use the 'query_athena' tool. When using this tool return the result of the query as a response to the user.
-    Always respond to the user conversationally. Never mention tools, table names and queries, just answer the user's question.
-    For example, if the user asked you to 'list all coaches from <some_country> at the 2024 Olympic Games', you would use the 'query_athena' tool and respond:
-    'These are the coaches from <some_country>:
-    <coach_1>,
-    <coach_2>,
-    <coach_3>
-    etc.'"""
-    ),
-    ("human", "{input}"),
-    ("placeholder", "{agent_scratchpad}")
-])
-
-# Create agent and executor
+# Create agent and agent executor
 agent_executor = None
 if chat_model:
     try:
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", "You are a helpful assistant specializing in Olympic travel information. Use the tools at your disposal to answer questions. Maintain context from previous messages in the conversation. Remember details about the user that they've shared. If you're unsure about something, you can ask for clarification. For any user queries not related to travel, first use the 'query_athena' tool. When using this tool return the result of the query as a response to the user. Always respond to the user conversationally. Never mention tools, table names and queries, just answer the user's question. For example, if the user asked you to 'list all coaches from <some_country> at the 2024 Olympic Games', you would use the 'query_athena' tool and respond: 'These are the coaches from <some_country>: <coach_1>, <coach_2>, <coach_3> etc.'"),
+            ("human", "{input}"),
+            ("placeholder", "{agent_scratchpad}")
+        ])
         agent = create_tool_calling_agent(chat_model, tools, prompt)
         agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
         with_message_history = RunnableWithMessageHistory(
@@ -136,6 +117,7 @@ if chat_model:
         logger.error(f"Error creating agent and executor: {e}")
         st.error(f"Error creating agent and executor: {e}")
 
+# Define message handling functions
 MAX_HISTORY_LENGTH = 5000  # Maximum number of characters to keep in history
 MAX_INPUT_LENGTH = 1000   # Maximum length for user input
 
@@ -231,63 +213,36 @@ def handle_user_input(user_input):
     
     return bot_response
 
-
- 
 # Sidebar with bot image and introduction text
 with st.sidebar:
     st.image("images/bot.png", width=100)
-    st.markdown("""**Hello! I'm Globot, your friendly travel assistant for Olympic Games information. Ask me about travel destinations, weather, and more.**
-    """)
+    st.markdown("""**Hello! I'm Globot, your friendly travel assistant for Olympic Games information. Ask me about travel destinations, weather, and more.**""")
+
 # Images for user and bot
 user_image = "images/user.png"
 bot_image = "images/bot.png"
 
 # Function to display messages
 def display_message(image_url, sender, message, is_user=True):
-    col1, col2 = st.columns([1, 9])
+    col1, col2 = st.columns([1, 5])
     with col1:
         st.image(image_url, width=50)
     with col2:
-        content = get_message_content(message)
-        if isinstance(content, list) and len(content) > 0 and isinstance(content[0], dict):
-            content = content[0].get('text', '')
-        st.write(f"**{sender}:** {content}", unsafe_allow_html=True)
+        st.markdown(f"**{sender}:** {message}")
 
+# User input and response handling
+with st.form(key='chat_form'):
+    user_input = st.text_input("You: ", "")
+    submit_button = st.form_submit_button(label='Send')
+    
+    if submit_button and user_input:
+        bot_response = handle_user_input(user_input)
+        display_message(user_image, "You", user_input, is_user=True)
+        display_message(bot_image, "Globot", bot_response, is_user=False)
 
-# Function to handle suggestion button clicks
-def on_suggestion_click(query):
-    st.session_state.user_input = query
-    response = handle_user_input(query)
-    if response:
-        display_message(bot_image, "Bot", response, is_user=False)
- 
-# User input with suggestion buttons
-st.sidebar.header("Suggestion Buttons")
-suggestions = [
-    "Which countries are the most successful in their olympic performance?",
-    "What are the trends in medal counts for athletics across Italy?",
-    "Tell me about the Olympic records in swimming.",
-    "Give me a travel itinerary for 15 days across Asian countries focusing on countries that did well in the Olympics",
-]
- 
-# Display suggestion buttons
-for suggestion in suggestions:
-    if st.sidebar.button(suggestion):
-        on_suggestion_click(suggestion)
- 
-# Text input for custom queries
-st.text_input("Enter your query:", key="user_input", on_change=lambda: on_suggestion_click(st.session_state.user_input))
- 
-# Display the chat interface
-if st.button("Send"):
-    user_input = st.session_state.user_input
-    if user_input:
-        response = handle_user_input(user_input)
-        if response:
-            display_message(bot_image, "Bot", response, is_user=False)
-            
- # Close the main content div
+# Close the main content div
 st.markdown('</div>', unsafe_allow_html=True)
+
  
  
 
