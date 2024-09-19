@@ -221,7 +221,7 @@ with st.sidebar:
     # Suggestion buttons
     st.header("Suggestion Buttons")
     suggestions = [
-        "Which countries are the most successful in their
+        "Which countries are the most successful in their"
 
  
 
