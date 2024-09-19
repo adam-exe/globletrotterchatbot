@@ -217,9 +217,8 @@ def handle_user_input(user_input):
 with st.sidebar:
     st.image("images/bot.png", width=100)
     st.markdown("""**Hello! I'm Globot, your friendly travel assistant for Olympic Games information. Ask me about travel destinations, weather, and more.**""")
-
+    
     # Suggestion buttons
-    st.header("Suggestion Buttons")
     suggestions = [
         "Which countries are the most successful in their Olympic performance?",
         "What are the trends in medal counts for athletics across Italy?",
@@ -231,17 +230,14 @@ with st.sidebar:
         st.session_state.user_input = query
         response = handle_user_input(query)
         if response:
-            display_message(bot_image, "Bot", response, is_user=False)
+            display_message(bot_image, "Globot", response, is_user=False)
     
     # Display suggestion buttons
     for suggestion in suggestions:
         if st.button(suggestion):
             on_suggestion_click(suggestion)
 
-# Display the chat interface
-user_image = "images/user.png"
-bot_image = "images/bot.png"
-
+# Function to display messages
 def display_message(image_url, sender, message, is_user=True):
     col1, col2 = st.columns([1, 5])
     with col1:
@@ -261,7 +257,7 @@ with st.form(key='chat_form'):
 
 # Close the main content div
 st.markdown('</div>', unsafe_allow_html=True)
- 
+
 
  
 
