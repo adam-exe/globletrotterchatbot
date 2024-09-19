@@ -11,6 +11,8 @@ import uuid
 import os
 load_dotenv()
 
+st.set_page_config(page_title="Globot", page_icon="images/bot.png", layout="wide")
+
 # Add custom CSS to make the banner static at the top of the page
 st.markdown("""
     <style>
@@ -35,7 +37,6 @@ st.image("images/banner2.png", use_column_width=True)
 # Add a wrapper div for the content and apply padding so it doesn't overlap with the fixed banner
 st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
-st.set_page_config(page_title="Globot", page_icon="images/bot.png", layout="wide")
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
