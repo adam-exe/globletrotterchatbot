@@ -27,7 +27,7 @@ st.markdown("""
         padding: 10px 0;
     }
     .main-content {
-        padding-top: 130px; /* Adjust padding based on banner height */
+        padding-top: 90px; /* Adjust padding based on banner height */
     }
     </style>
     """, unsafe_allow_html=True)
